@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import MyBookings from "./pages/MyBookings";
+import EventDetails from "./pages/EventDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Logout from "./pages/Logout";
@@ -11,12 +12,14 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Navbar />
         <div className="pages">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/my-bookings" element={<MyBookings />} />
+            <Route element={<Navbar />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/my-bookings" element={<MyBookings />} />
+            </Route>
+            <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/logout" element={<Logout />} />

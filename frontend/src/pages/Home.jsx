@@ -5,6 +5,6 @@ const Home = () => {
       <p>Book your tickets easily and quickly.</p>
     </div>
   );
-}
+};
 
 export default Home;
