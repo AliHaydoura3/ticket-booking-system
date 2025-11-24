@@ -5,6 +5,6 @@ const MyBookings = () => {
       <p>List of your booked tickets will be displayed here.</p>
     </div>
   );
-}
+};
 
 export default MyBookings;

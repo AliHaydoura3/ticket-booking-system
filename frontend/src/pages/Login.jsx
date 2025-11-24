@@ -1,10 +1,73 @@
+import { useState } from "react";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const { login } = useAuth();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    usernameOrEmail: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      await login(user.usernameOrEmail, user.password);
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <h1>Login Page</h1>
-      <p>Login to your account to manage your bookings.</p>
+      <form>
+        <label>
+          Username or Email:
+          <input
+            type="text"
+            name="usernameOrEmail"
+            value={user.usernameOrEmail}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <button type="submit" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </form>
     </div>
   );
-}
+};
 
 export default Login;

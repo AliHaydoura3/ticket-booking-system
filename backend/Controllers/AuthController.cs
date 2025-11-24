@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Backend.Dtos;
 using Backend.Models;
 using Backend.Services;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -27,13 +29,13 @@ namespace Backend.Controllers
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
             {
-                return Unauthorized("Invalid username or password.");
+                return Unauthorized("Invalid credentials.");
             }
 
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateToken(user, roles);
 
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, User = new { user.UserName, user.Email } });
         }
 
         [HttpPost("register")]
@@ -50,7 +52,30 @@ namespace Backend.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateToken(user, roles);
 
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, User = new { user.UserName, user.Email } });
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _tokenService.GenerateToken(user, roles);
+
+            return Ok(new { Token = token, User = new { user.UserName, user.Email } });
         }
     }
 }
