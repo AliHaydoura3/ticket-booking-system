@@ -14,11 +14,9 @@ function App() {
       <div className="App">
         <div className="pages">
           <Routes>
-            <Route element={<Navbar />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/my-bookings" element={<MyBookings />} />
-            </Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/my-bookings" element={<MyBookings />} />
             <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
