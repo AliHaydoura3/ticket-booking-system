@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { login } = useAuth();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -31,7 +30,7 @@ const Login = () => {
       await login(user.usernameOrEmail, user.password);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -64,7 +63,19 @@ const Login = () => {
         <button type="submit" onClick={handleSubmit} disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <div style={{ color: "red", marginTop: "10px" }}>
+            {Array.isArray(error) ? (
+              <ul>
+                {error.map((err, index) => (
+                  <li key={index}>{err.description}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>{error}</p>
+            )}
+          </div>
+        )}
       </form>
     </div>
   );

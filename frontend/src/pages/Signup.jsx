@@ -31,7 +31,7 @@ const Signup = () => {
       await signup(user.username, user.email, user.password);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed");
+      setError(err.response?.data || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -74,7 +74,19 @@ const Signup = () => {
         <button type="submit" onClick={handleSubmit} disabled={loading}>
           {loading ? "Signing up..." : "Signup"}
         </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <div style={{ color: "red", marginTop: "10px" }}>
+            {Array.isArray(error) ? (
+              <ul>
+                {error.map((err, index) => (
+                  <li key={index}>{err.description}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>{error}</p>
+            )}
+          </div>
+        )}
       </form>
     </div>
   );
