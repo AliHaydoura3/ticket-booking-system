@@ -6,11 +6,13 @@ using System.Text;
 using Backend.Data;
 using Backend.Models;
 using Backend.Services;
+using Backend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

@@ -4,6 +4,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251128194326_AddConstraints")]
+    partial class AddConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,38 +148,6 @@ namespace backend.Migrations
                     b.HasKey("EventId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            AvailableSeats = 200,
-                            Category = "Music",
-                            Date = new DateTime(2025, 12, 20, 19, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Holiday Concert",
-                            Price = 49.99m,
-                            TotalSeats = 200
-                        },
-                        new
-                        {
-                            EventId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            AvailableSeats = 500,
-                            Category = "Conference",
-                            Date = new DateTime(2026, 1, 15, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Tech Conference",
-                            Price = 199.00m,
-                            TotalSeats = 500
-                        },
-                        new
-                        {
-                            EventId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            AvailableSeats = 150,
-                            Category = "Comedy",
-                            Date = new DateTime(2025, 12, 5, 20, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Comedy Night",
-                            Price = 29.50m,
-                            TotalSeats = 150
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
