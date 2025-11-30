@@ -5,18 +5,23 @@ import MyBookings from "./pages/MyBookings";
 import EventDetails from "./pages/EventDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path="/events/:id" element={<EventDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
+      <div className="min-h-screen bg-gray-50">
+        <Routes>
+          <Route path="/" element={<Navbar />}>
+            <Route index element={<Home />} />
+            <Route path="events" element={<Events />} />
+            <Route path="events/:id" element={<EventDetails />} />
+            <Route path="my-bookings" element={<MyBookings />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

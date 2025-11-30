@@ -42,6 +42,11 @@ namespace Backend.Services
             return await query.ToListAsync();
         }
 
+        public async Task<bool> IsEventBookedByUserAsync(Guid eventId, string userId)
+        {
+            return await _context.Bookings.AnyAsync(b => b.EventId == eventId && b.UserId == userId);
+        }
+
         public async Task<Event?> GetEventByIdAsync(Guid id)
         {
             return await _context.Events.FindAsync(id);

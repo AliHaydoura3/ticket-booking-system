@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
-using System;
 
 namespace Backend.Data
 {
@@ -80,11 +79,6 @@ namespace Backend.Data
                 .Property(e => e.Category)
                 .IsRequired()
                 .HasMaxLength(100);
-
-            builder.Entity<Booking>()
-                .Property(b => b.Status)
-                .IsRequired()
-                .HasMaxLength(50);
         }
     }
 }

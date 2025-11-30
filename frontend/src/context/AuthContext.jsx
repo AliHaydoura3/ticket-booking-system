@@ -46,7 +46,6 @@ const AuthProvider = ({ children }) => {
       password,
     });
     const { token, user } = response.data;
-    console.log("Signup response:", response.data);
     localStorage.setItem("authToken", token);
     setUser(user);
   };

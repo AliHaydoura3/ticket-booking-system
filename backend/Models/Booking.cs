@@ -9,6 +9,5 @@ namespace Backend.Models
         public ApplicationUser User { get; set; } = null!;
         public Guid EventId { get; set; }
         public Event Event { get; set; } = null!;
-        public string Status { get; set; } = string.Empty;
     }
 }
