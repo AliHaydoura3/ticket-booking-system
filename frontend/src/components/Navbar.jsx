@@ -58,14 +58,8 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                Sign In
-              </Link>
-              <Link to="/signup" className="btn-primary text-sm">
-                Sign Up
+              <Link to="/logout" className="btn-primary bg-red-600 hover:bg-red-700">
+                Sign Out
               </Link>
             </div>
           </div>
@@ -88,30 +82,10 @@ const Navbar = () => {
               </span>
             </div>
             <div className="flex space-x-6">
-              <Link
-                to="/"
-                className="text-gray-500 hover:text-gray-700 text-sm"
-              >
-                Terms
-              </Link>
-              <Link
-                to="/"
-                className="text-gray-500 hover:text-gray-700 text-sm"
-              >
-                Privacy
-              </Link>
-              <Link
-                to="/"
-                className="text-gray-500 hover:text-gray-700 text-sm"
-              >
-                Contact
-              </Link>
+              <p className="text-gray-500 text-sm">
+                © 2025 TicketBook. All rights reserved.
+              </p>
             </div>
-          </div>
-          <div className="mt-4 text-center md:text-left">
-            <p className="text-gray-500 text-sm">
-              © 2024 TicketBook. All rights reserved.
-            </p>
           </div>
         </div>
       </footer>

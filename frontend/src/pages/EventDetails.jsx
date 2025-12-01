@@ -4,7 +4,14 @@ import apiClient from "../api/axios";
 import ProtectedRoute from "../components/ProtectedRoute";
 
 const EventDetails = () => {
-  const [event, setEvent] = useState(null);
+  const [event, setEvent] = useState({
+    name: "",
+    description: "",
+    date: "",
+    category: "",
+    price: 0,
+    availableSeats: 0,
+  });
   const { id } = useParams();
   const [isBooked, setIsBooked] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -93,7 +100,7 @@ const EventDetails = () => {
           {/* Back Button */}
           <button 
             onClick={() => navigate("/events")}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors duration-200 group"
+            className="hover:cursor-pointer flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors duration-200 group"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -107,7 +114,7 @@ const EventDetails = () => {
               <div className="text-center">
                 <h1 className="text-4xl font-bold mb-2">{event.name}</h1>
                 <div className="inline-flex items-center px-3 py-1 rounded-full bg-white bg-opacity-20 backdrop-blur-sm">
-                  <span className="text-sm font-medium capitalize">{event.category}</span>
+                  <span className="text-sm font-medium capitalize text-blue-500">{event.category}</span>
                 </div>
               </div>
             </div>
@@ -224,7 +231,7 @@ const EventDetails = () => {
                 <button
                   disabled={event.availableSeats === 0 || bookingLoading}
                   onClick={handleBooking}
-                  className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
+                  className={`hover:cursor-pointer w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
                     event.availableSeats === 0
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : isBooked

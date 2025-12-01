@@ -226,26 +226,6 @@ const MyBookings = () => {
                             </span>
                           </div>
                         </div>
-                        
-                        {/* Booking Details */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
-                          <div>
-                            <p className="text-sm font-medium text-gray-600">Booking ID</p>
-                            <p className="text-sm text-gray-900 font-mono">{booking.bookingId}</p>
-                          </div>
-                          {booking.ticketCount && (
-                            <div>
-                              <p className="text-sm font-medium text-gray-600">Tickets</p>
-                              <p className="text-sm text-gray-900">{booking.ticketCount}</p>
-                            </div>
-                          )}
-                          {booking.totalPrice && (
-                            <div>
-                              <p className="text-sm font-medium text-gray-600">Total Paid</p>
-                              <p className="text-sm text-gray-900 font-semibold">${booking.totalPrice}</p>
-                            </div>
-                          )}
-                        </div>
                       </div>
                       
                       <div className="mt-4 lg:mt-0 lg:ml-6">
