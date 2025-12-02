@@ -7,5 +7,6 @@ namespace Backend.Services.Interfaces
         Task<bool> CreateBookingAsync(Guid eventId, string userId);
         Task<bool> CancelBookingAsync(Guid bookingId, string userId);
         Task<IEnumerable<BookingDto>> GetUserBookingsAsync(string userId);
+        Task<DashboardDto> GetDashboardDataAsync(string organizerId);
     }
 }

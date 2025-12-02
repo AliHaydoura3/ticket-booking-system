@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251129044640_SeedDatabase")]
-    partial class SeedDatabase
+    [Migration("20251201114842_AddDescriptionToEvents")]
+    partial class AddDescriptionToEvents
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,11 +99,6 @@ namespace backend.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -134,10 +129,18 @@ namespace backend.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("OrganizerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -147,39 +150,9 @@ namespace backend.Migrations
 
                     b.HasKey("EventId");
 
-                    b.ToTable("Events");
+                    b.HasIndex("OrganizerId");
 
-                    b.HasData(
-                        new
-                        {
-                            EventId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            AvailableSeats = 200,
-                            Category = "Music",
-                            Date = new DateTime(2025, 12, 20, 19, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Holiday Concert",
-                            Price = 49.99m,
-                            TotalSeats = 200
-                        },
-                        new
-                        {
-                            EventId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            AvailableSeats = 500,
-                            Category = "Conference",
-                            Date = new DateTime(2026, 1, 15, 9, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Tech Conference",
-                            Price = 199.00m,
-                            TotalSeats = 500
-                        },
-                        new
-                        {
-                            EventId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            AvailableSeats = 150,
-                            Category = "Comedy",
-                            Date = new DateTime(2025, 12, 5, 20, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Comedy Night",
-                            Price = 29.50m,
-                            TotalSeats = 150
-                        });
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -332,6 +305,17 @@ namespace backend.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Models.Event", b =>
+                {
+                    b.HasOne("Backend.Models.ApplicationUser", "Organizer")
+                        .WithMany()
+                        .HasForeignKey("OrganizerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Organizer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

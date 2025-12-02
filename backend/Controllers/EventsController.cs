@@ -18,6 +18,56 @@ namespace Backend.Controllers
             _eventService = eventService;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto dto)
+        {
+            var organizerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(organizerId))
+            {
+                return Unauthorized();
+            }
+
+            var createdEvent = await _eventService.CreateEventAsync(dto, organizerId);
+            if (createdEvent == null)
+            {
+                return BadRequest("Failed to create event.");
+            }
+
+            return CreatedAtAction(nameof(GetEventById), new { id = createdEvent.EventId }, createdEvent);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] EventCreateDto dto)
+        {
+            var success = await _eventService.UpdateEventAsync(id, dto);
+            if (!success)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpGet("categories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var categories = await _eventService.GetCategoriesAsync();
+            return Ok(categories);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteEvent(Guid id)
+        {
+            var success = await _eventService.DeleteEventAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
         [HttpGet("search")]
         public async Task<IActionResult> SearchEvents([FromQuery] EventSearchDto searchDto)
         {
@@ -42,6 +92,20 @@ namespace Backend.Controllers
 
             var isBooked = await _eventService.IsEventBookedByUserAsync(id, userId);
             return Ok(new { eventItem, isBooked });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetEventsByOrganizer()
+        {
+            var organizerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(organizerId))
+            {
+                return Unauthorized();
+            }
+
+            var events = await _eventService.GetEventsByOrganizerAsync(organizerId);
+            return Ok(events);
         }
     }
 }

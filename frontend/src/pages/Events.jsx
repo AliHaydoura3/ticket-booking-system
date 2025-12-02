@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
 import apiClient from "../api/axios";
@@ -14,6 +14,8 @@ const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [categories, setCategories] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +55,19 @@ const Events = () => {
     });
     setEvents([]);
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await apiClient.get("/events/categories");
+        setCategories(fetchedCategories.data);
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <ProtectedRoute>
@@ -98,12 +113,11 @@ const Events = () => {
                     className="input-field"
                   >
                     <option value="">All Categories</option>
-                    <option value="music">Music</option>
-                    <option value="sports">Sports</option>
-                    <option value="conference">Conference</option>
-                    <option value="theater">Theater</option>
-                    <option value="comedy">Comedy</option>
-                    <option value="workshop">Workshop</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

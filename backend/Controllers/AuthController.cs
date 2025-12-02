@@ -35,24 +35,44 @@ namespace Backend.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateToken(user, roles);
 
-            return Ok(new { Token = token, User = new { user.UserName, user.Email } });
+            return Ok(new { Token = token, User = new { user.UserName, user.Email, Roles = roles } });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var user = new ApplicationUser { UserName = dto.Username, Email = dto.Email };
-            var result = await _userManager.CreateAsync(user, dto.Password);
+            var existingUser = await _userManager.FindByNameAsync(dto.Username) 
+                               ?? await _userManager.FindByEmailAsync(dto.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("Username or email already exists.");
+            }
 
+            var newUser = new ApplicationUser
+            {
+                UserName = dto.Username,
+                Email = dto.Email
+            };
+
+            var result = await _userManager.CreateAsync(newUser, dto.Password);
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = _tokenService.GenerateToken(user, roles);
+            if (dto.IsAdmin)
+            {
+                await _userManager.AddToRoleAsync(newUser, "Admin");
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(newUser, "User");
+            }
 
-            return Ok(new { Token = token, User = new { user.UserName, user.Email } });
+            var roles = await _userManager.GetRolesAsync(newUser);
+            var token = _tokenService.GenerateToken(newUser, roles);
+
+            return Ok(new { Token = token, User = new { newUser.UserName, newUser.Email, Roles = roles } });
         }
 
         [Authorize]
@@ -75,7 +95,7 @@ namespace Backend.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateToken(user, roles);
 
-            return Ok(new { Token = token, User = new { user.UserName, user.Email } });
+            return Ok(new { Token = token, User = new { user.UserName, user.Email, Roles = roles } });
         }
     }
 }

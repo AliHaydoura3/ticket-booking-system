@@ -76,5 +76,30 @@ namespace Backend.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task<DashboardDto> GetDashboardDataAsync(string organizerId)
+        {
+            var totalEvents = await _context.Events
+                .CountAsync(e => e.OrganizerId == organizerId);
+
+            var totalBookings = await _context.Bookings
+                .Where(b => b.Event.OrganizerId == organizerId)
+                .CountAsync();
+
+            var totalRevenue = await _context.Bookings
+                .Where(b => b.Event.OrganizerId == organizerId)
+                .SumAsync(b => b.Event.Price);
+
+            var totalUsers = await _context.Users.CountAsync(u => 
+                _context.Bookings.Any(b => b.UserId == u.Id && b.Event.OrganizerId == organizerId));
+
+            return new DashboardDto
+            {
+                TotalEvents = totalEvents,
+                TotalBookings = totalBookings,
+                TotalRevenue = totalRevenue,
+                TotalUsers = totalUsers
+            };
+        }
     }
 }

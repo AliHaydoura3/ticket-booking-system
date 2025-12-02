@@ -3,7 +3,10 @@ namespace Backend.Models
     public class Event
     {
         public Guid EventId { get; set; }
+        public string OrganizerId { get; set; } = string.Empty;
+        public ApplicationUser Organizer { get; set; } = null!;
         public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public decimal Price { get; set; }

@@ -65,5 +65,19 @@ namespace Backend.Controllers
             var bookings = await _bookingService.GetUserBookingsAsync(userId);
             return Ok(bookings);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetDashboardData()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var dashboardData = await _bookingService.GetDashboardDataAsync(userId);
+            return Ok(dashboardData);
+        }
     }
 }

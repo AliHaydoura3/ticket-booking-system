@@ -53,7 +53,7 @@ const EventDetails = () => {
       }
     } catch (err) {
       setBookingError(
-        err.response?.data || err.response || "Failed to process booking. Please try again."
+        err.response?.data || "Failed to process booking. Please try again."
       );
     } finally {
       setBookingLoading(false);

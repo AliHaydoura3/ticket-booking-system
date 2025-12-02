@@ -1,8 +1,11 @@
-// components/Navbar.js
 import { Link, Outlet, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
+  const { user } = useAuth();
   const location = useLocation();
+
+  const isAdmin = user?.roles.includes("Admin");
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -58,7 +61,23 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Link to="/logout" className="btn-primary bg-red-600 hover:bg-red-700">
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className={`inline-flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                    isActive("/admin/dashboard")
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`}
+                >
+                  Admin Dashboard
+                </Link>
+              )}
+
+              <Link
+                to="/logout"
+                className="btn-primary bg-red-600 hover:bg-red-700"
+              >
                 Sign Out
               </Link>
             </div>

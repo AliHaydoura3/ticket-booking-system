@@ -164,7 +164,6 @@ const Login = () => {
         <div className="text-center text-xs text-gray-500">
           <p>
             By signing in, you agree to our Terms of Service and Privacy Policy.
-            
           </p>
         </div>
       </div>

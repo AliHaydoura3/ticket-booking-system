@@ -39,11 +39,12 @@ const AuthProvider = ({ children }) => {
     setUser(user);
   };
 
-  const signup = async (userName, email, password) => {
+  const signup = async (userName, email, password, isAdmin) => {
     const response = await apiClient.post("/auth/register", {
       userName,
       email,
       password,
+      isAdmin,
     });
     const { token, user } = response.data;
     localStorage.setItem("authToken", token);
