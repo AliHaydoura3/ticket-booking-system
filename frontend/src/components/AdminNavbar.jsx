@@ -1,11 +1,17 @@
 import { Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
 const AdminNavbar = () => {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path) => {
     return location.pathname === path;
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -36,7 +42,7 @@ const AdminNavbar = () => {
                 </span>
               </Link>
 
-              {/* Navigation Links */}
+              {/* Desktop Navigation Links */}
               <div className="hidden md:ml-10 md:flex md:space-x-4">
                 <Link
                   to="/admin"
@@ -112,18 +118,86 @@ const AdminNavbar = () => {
               </div>
             </div>
 
-            {/*Logout */}
-            <div className="flex items-center">
-              <div className="flex items-center space-x-4">
+            {/* Desktop Logout & Mobile Menu Button */}
+            <div className="flex items-center space-x-4">
+              {/* Desktop Logout */}
+              <div className="hidden md:block">
                 <Link
                   to="/logout"
-                  className="btn-primary bg-red-600 hover:bg-red-700"
+                  className="btn-primary bg-red-600 hover:bg-red-700 text-sm px-4 py-2"
+                >
+                  Sign Out
+                </Link>
+              </div>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={toggleMobileMenu}
+                className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              >
+                <span className="sr-only">Open menu</span>
+                {mobileMenuOpen ? (
+                  <svg className="block h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="block h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden py-4 border-t border-gray-800">
+              <div className="space-y-1">
+                <Link
+                  to="/admin"
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive("/admin")
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  to="/admin/events"
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive("/admin/events")
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Manage Events
+                </Link>
+                <Link
+                  to="/admin/create-event"
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive("/admin/create-event")
+                      ? "bg-gray-800 text-white"
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Create Event
+                </Link>
+              </div>
+              <div className="pt-4 mt-4 border-t border-gray-800">
+                <Link
+                  to="/logout"
+                  className="block w-full text-center btn-primary bg-red-600 hover:bg-red-700"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign Out
                 </Link>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </nav>
 
