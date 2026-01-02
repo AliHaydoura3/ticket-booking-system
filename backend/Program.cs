@@ -17,7 +17,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration["ConnectionString"]);
 });
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
