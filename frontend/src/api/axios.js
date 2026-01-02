@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://ticket-booking-system-api-d9atfsehd8ajddey.germanywestcentral-01.azurewebsites.net/api",
 });
 
 apiClient.interceptors.request.use((config) => {
