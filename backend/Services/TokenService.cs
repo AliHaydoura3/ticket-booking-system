@@ -18,10 +18,10 @@ namespace Backend.Services
 
         public string GenerateToken(ApplicationUser user, IList<string> roles)
         {
-            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key is not configured.");
-            var jwtIssuer = _configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("JWT issuer is not configured.");
-            var jwtAudience = _configuration["Jwt:Audience"] ?? throw new InvalidOperationException("JWT audience is not configured.");
-            var jwtDurationInMinutes = _configuration["Jwt:DurationInMinutes"] ?? throw new InvalidOperationException("JWT duration in minutes is not configured.");
+            var jwtKey = _configuration["JwtKey"] ?? throw new InvalidOperationException("JWT key is not configured.");
+            var jwtIssuer = _configuration["JwtIssuer"] ?? throw new InvalidOperationException("JWT issuer is not configured.");
+            var jwtAudience = _configuration["JwtAudience"] ?? throw new InvalidOperationException("JWT audience is not configured.");
+            var jwtDurationInMinutes = _configuration["JwtDurationInMinutes"] ?? throw new InvalidOperationException("JWT duration in minutes is not configured.");
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
